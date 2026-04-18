@@ -1,90 +1,102 @@
-# 💰 Finance Tracker – macOS Menu Bar App
+# 💰 Income Tracker — macOS Menu Bar App
 
-Prosta aplikacja do śledzenia wydatków działająca jako nakładka w pasku menu macOS.
+A lightweight app for tracking quarterly income directly from the macOS menu bar. Built with Python and SQLite — all data stored locally on your machine.
 
-## Funkcje
+## Features
 
-- 🟢 **Wskaźnik w pasku menu** – zielony/żółty/pomarańczowy/czerwony w zależności od wykorzystania limitu
-- ➕ **Szybkie dodawanie wydatków** – kwota, kategoria, opis, data
-- 📋 **Historia** – przeglądaj i usuwaj wydatki miesiąc po miesiącu
-- ⚠️ **Powiadomienia** – alert przy 75%, 90% i 100% limitu miesięcznego
-- ⚙️ **Ustawienia** – zmiana limitu i dodawanie własnych kategorii
-- 💾 **SQLite** – dane zapisywane lokalnie w `~/.finance_tracker/expenses.db`
+- 🟢 **Menu bar indicator** — color-coded icon shows how much of your quarterly limit you've used
+- ➕ **Quick income entry** — add amount and description in seconds
+- 📋 **Current quarter view** — see all entries with running total
+- 🕐 **Quarter history** — browse all previous quarters with per-entry details
+- 💹 **All-time summary** — total earnings grouped by year and quarter, with average per quarter
+- 🗑 **Delete last entry** — undo the most recent addition
+- ⚠️ **Limit notifications** — alerts at 75%, 90%, and 100% of the quarterly limit
+- 🔄 **Auto quarter reset** — automatically switches to the next quarter (Q1–Q4) with a notification
+- 💾 **SQLite database** — stored locally at `~/.finance_tracker/expenses.db`
 
 ---
 
-## Instalacja
+## Quarters
 
-### Wymagania
+The year is divided into 4 fixed quarters:
+
+| Quarter | Months |
+|---------|--------|
+| Q1 | January – March |
+| Q2 | April – June |
+| Q3 | July – September |
+| Q4 | October – December |
+
+The quarterly limit is **10,800 PLN**. The counter resets automatically at the start of each new quarter.
+
+---
+
+## Requirements
+
 - macOS 10.14+
 - Python 3.8+
 
-### Kroki
+---
+
+## Installation
 
 ```bash
-# 1. Sklonuj lub pobierz folder finance_tracker
+# 1. Clone or download the repository
 
-# 2. Uruchom skrypt instalacyjny (zainstaluje zależności i odpali aplikację)
+# 2. Run the setup script (installs dependencies and launches the app)
 chmod +x run.sh
 ./run.sh
 ```
 
-Po uruchomieniu w pasku menu pojawi się ikona 🟢 z aktualną sumą wydatków.
+The menu bar icon will appear as 🟢 with your current quarter total.
 
 ---
 
-## Autostart przy logowaniu
+## Auto-start on Login
 
-Aby aplikacja uruchamiała się automatycznie:
+To launch the app automatically every time you log in:
 
 ```bash
-# 1. Znajdź swoją nazwę użytkownika
+# 1. Find your username
 whoami
 
-# 2. Znajdź ścieżkę do folderu
-pwd   # w folderze finance_tracker
+# 2. Find the path to the app folder
+pwd
 
-# 3. Edytuj plik com.financetracker.app.plist
-#    Zastąp TWOJA_NAZWA_UZYTKOWNIKA i /SCIEZKA/DO/FOLDERU
+# 3. Edit com.financetracker.app.plist
+#    Replace YOUR_USERNAME and /PATH/TO/FOLDER with the values above
 
-# 4. Skopiuj do LaunchAgents
+# 4. Copy to LaunchAgents
 cp com.financetracker.app.plist ~/Library/LaunchAgents/
 
-# 5. Wczytaj agenta
+# 5. Load the agent
 launchctl load ~/Library/LaunchAgents/com.financetracker.app.plist
 ```
 
-Aby wyłączyć autostart:
+To disable auto-start:
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.financetracker.app.plist
 ```
 
 ---
 
-## Struktura plików
+## File Structure
 
 ```
-finance_tracker/
-├── app.py              # Główna aplikacja (menu bar)
-├── database.py         # Baza danych SQLite
-├── ui_windows.py       # Okna UI (Tkinter)
-├── requirements.txt    # Zależności Python
-├── run.sh              # Skrypt uruchomienia
-└── com.financetracker.app.plist  # LaunchAgent (autostart)
+income_tracker/
+├── app.py                          # Main app — menu bar UI and logic
+├── database.py                     # SQLite layer — read/write/query
+├── requirements.txt                # Python dependencies (rumps)
+├── run.sh                          # Setup and launch script
+└── com.financetracker.app.plist    # LaunchAgent for auto-start
 ```
 
 ---
 
-## Kategorie domyślne
+## Data
 
-Jedzenie · Transport · Mieszkanie · Rozrywka · Zdrowie · Ubrania · Elektronika · Inne
+The SQLite database is stored at: `~/.finance_tracker/expenses.db`
 
-Możesz dodawać własne kategorie w **Ustawienia**.
+You can open it with any SQLite viewer, e.g. [DB Browser for SQLite](https://sqlitebrowser.org/).
 
----
-
-## Dane
-
-Baza SQLite przechowywana w: `~/.finance_tracker/expenses.db`
-
-Możesz ją otworzyć dowolnym narzędziem SQLite (np. [DB Browser for SQLite](https://sqlitebrowser.org/)).
+> **Note:** The database file is excluded from version control via `.gitignore` — your financial data never leaves your machine.

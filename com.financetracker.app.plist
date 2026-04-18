@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+    LaunchAgent – automatyczne uruchamianie Finance Tracker przy logowaniu.
+
+    INSTALACJA:
+    1. Zmień TWOJA_NAZWA_UZYTKOWNIKA na swoją nazwę (wynik: whoami)
+    2. Zmień /SCIEZKA/DO/FOLDERU na pełną ścieżkę do folderu aplikacji
+    3. Skopiuj plik do ~/Library/LaunchAgents/
+    4. Wczytaj agenta:
+         launchctl load ~/Library/LaunchAgents/com.financetracker.app.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.financetracker.app</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <!-- Ścieżka do Pythona w virtualenv -->
+        <string>/Users/TWOJA_NAZWA_UZYTKOWNIKA/.finance_tracker_env/bin/python3</string>
+        <!-- Ścieżka do app.py -->
+        <string>/SCIEZKA/DO/FOLDERU/finance_tracker/app.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/SCIEZKA/DO/FOLDERU/finance_tracker</string>
+
+    <!-- Uruchom po zalogowaniu -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Restartuj jeśli padnie -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Logi -->
+    <key>StandardOutPath</key>
+    <string>/tmp/financetracker.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/financetracker_error.log</string>
+</dict>
+</plist>
